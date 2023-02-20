@@ -66,7 +66,7 @@
     cb.querySelector('.hx_drag-and-drop').remove();
 
     // Move the title bar of each comment to the bottom of the comment
-    Array.from(document.querySelectorAll('.timeline-comment'))
+    Array.from(document.querySelectorAll('.can-reverse-header .timeline-comment'))
         .forEach(comment => {
         const header = comment.firstElementChild;
         header.remove();
