@@ -3,7 +3,7 @@
 // @namespace    https://github.com/emereum/tampermonkey-scripts
 // @updateURL    https://raw.githubusercontent.com/emereum/tampermonkey-scripts/main/github-cromulent-prs.user.js
 // @downloadURL  https://raw.githubusercontent.com/emereum/tampermonkey-scripts/main/github-cromulent-prs.user.js
-// @version      0.1
+// @version      0.2
 // @description  Reverses the discussion order in GitHub PRs.
 // @author       emereum
 // @match        https://github.com/*/*/pull/*
