@@ -9,4 +9,4 @@
 
 Reverses the discussion order in GitHub PRs. Helpful for long PRs with lots of bot chatter.
 
-https://github.com/emereum/tampermonkey-scripts/raw/rel/github-cromulent-prs.user.js
+https://raw.githubusercontent.com/emereum/tampermonkey-scripts/main/github-cromulent-prs.user.js
