@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Cromulent GitHub PRs
 // @namespace    https://github.com/emereum/tampermonkey-scripts
-// @updateURL    https://github.com/emereum/tampermonkey-scripts/raw/rel/github-cromulent-prs.user.js
-// @downloadURL  https://github.com/emereum/tampermonkey-scripts/raw/rel/github-cromulent-prs.user.js
+// @updateURL    https://raw.githubusercontent.com/emereum/tampermonkey-scripts/main/github-cromulent-prs.user.js
+// @downloadURL  https://raw.githubusercontent.com/emereum/tampermonkey-scripts/main/github-cromulent-prs.user.js
 // @version      0.1
 // @description  Reverses the discussion order in GitHub PRs.
 // @author       emereum
