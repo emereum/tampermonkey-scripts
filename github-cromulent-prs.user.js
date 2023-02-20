@@ -14,6 +14,18 @@
 (function() {
     'use strict';
 
+    // Styles
+    const styles = Object.assign(document.createElement('style'), {
+        innerHTML: `
+          @media (min-width: 768px) {
+            .bootleg-comment-box {
+              margin-left: -56px;
+            }
+          }
+        `});
+    document.head.appendChild(styles);
+
+
     // Reverse the discussion
     const discussion = document.querySelector('.js-discussion');
     Array.from(document.querySelectorAll('.js-timeline-item'))
@@ -26,7 +38,7 @@
     // Shimmy up that comment box
     const cb = document.querySelector('#issue-comment-box');
     cb.remove();
-    cb.style['margin-left'] = '-56px';
+    cb.classList.add('bootleg-comment-box');
     discussion.insertBefore(cb, document.querySelector('.js-timeline-marker'));
 
     // Remove protips
