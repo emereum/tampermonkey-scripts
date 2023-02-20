@@ -3,7 +3,7 @@
 // @namespace    https://github.com/emereum/tampermonkey-scripts
 // @updateURL    https://raw.githubusercontent.com/emereum/tampermonkey-scripts/main/github-cromulent-prs.user.js
 // @downloadURL  https://raw.githubusercontent.com/emereum/tampermonkey-scripts/main/github-cromulent-prs.user.js
-// @version      0.2
+// @version      0.3
 // @description  Reverses the discussion order in GitHub PRs.
 // @author       emereum
 // @match        https://github.com/*/*/pull/*
@@ -14,17 +14,17 @@
 (function() {
     'use strict';
 
-    // Styles
     const styles = Object.assign(document.createElement('style'), {
         innerHTML: `
-          @media (min-width: 768px) {
+            @media (min-width: 768px) {
             .bootleg-comment-box {
-              margin-left: -56px;
+                margin-left: -56px;
             }
-          }
+            }
         `});
     document.head.appendChild(styles);
 
+    const reverseChildren = (el) => el.append(...Array.from(el.childNodes).reverse());
 
     // Reverse the discussion
     const discussion = document.querySelector('.js-discussion');
@@ -34,6 +34,18 @@
             x.remove();
             discussion.appendChild(x);
         });
+
+    // Reverse groups of items within a timeline item
+    Array.from(document.querySelectorAll('.js-timeline-item'))
+        .forEach(timelineItem => reverseChildren(timelineItem));
+
+    // Reverse groups of commits
+    const commitGroups = Array.from(document.querySelectorAll('[id^="commits-pushed"]'))
+        .map(x => x.parentNode);
+    commitGroups.forEach(commitGroup => {
+        reverseChildren(commitGroup);
+        reverseChildren(commitGroup.firstElementChild);
+    });
 
     // Shimmy up that comment box
     const cb = document.querySelector('#issue-comment-box');
