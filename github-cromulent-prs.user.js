@@ -28,6 +28,9 @@
           margin-left: -56px;
         }
       }
+      .Details-content--closed {
+        display: none;
+      }
     `);
 
     // Reverse the discussion
@@ -92,4 +95,73 @@
         bottom: 11px;
       }
     `);
+
+    const commentMutators = [
+        {
+            description: 'Summarise buildkite failures into their header',
+            condition: (links, body) =>
+                links.length === 2
+                && links.filter(x => x.href.includes('buildkite.com')).length === 2
+                && body.includes('failed'),
+            mutateHeader: (headerEl, links) => {
+                headerEl.innerHTML = '';
+                headerEl.classList.remove('text-italic');
+                headerEl.append('🔥 ', links[0], ' at step ', links[1]);
+            },
+            mutateTimelineItem: (el) => el.classList.add('ci-control-comment'),
+            mutateBody: (el) => el.remove(),
+        },
+        {
+            description: 'Summarise buildkite requests into their header',
+            condition: (links, body) =>
+                links.length === 2
+                && links[0].href.includes('github.com')
+                && links[1].href.includes('buildkite.com')
+                && body.includes('scheduled'),
+            mutateHeader: (headerEl, links) => {
+                headerEl.innerHTML = '';
+                headerEl.classList.remove('text-italic');
+                headerEl.append('🙏 ', links[1], ' for ', links[0]);
+            },
+            mutateTimelineItem: (el) => el.classList.add('ci-control-comment'),
+            mutateBody: (el) => el.remove(),
+        }
+    ]
+
+    // Crunch comments if they look like they are from a BuildKite bot
+    Array.from(document.querySelectorAll('.timeline-comment-group'))
+        .map(x => ({
+            timelineItem: x.parentNode.parentNode,
+            links: Array.from(x.querySelector('.comment-body.markdown-body').querySelectorAll('a')),
+            body: x.querySelector('.comment-body.markdown-body').textContent,
+            bodyEl: x.querySelector('.comment-body.markdown-body'),
+            headerEl: (x.querySelector('.timeline-comment-header') ?? x.querySelector('summary')).querySelector('h3'),
+         }))
+         .filter(x => x.headerEl != null)
+         .forEach(x => {
+             const clonedLinks = x.links.map(x => x.cloneNode(true));
+             commentMutators
+                 .filter(mutator => mutator.condition(clonedLinks, x.body))
+                 .forEach(mutator => {
+                     mutator.mutateHeader?.(x.headerEl, clonedLinks);
+                     mutator.mutateTimelineItem?.(x.timelineItem);
+                     mutator.mutateBody?.(x.bodyEl);
+                 });
+         });
+
+    addStyle(`
+      .ci-control-comment + .ci-control-comment {
+          margin-top: -30px;
+      }
+
+      .ci-control-comment + .ci-control-comment .TimelineItem::before {
+          background-color: inherit;
+      }
+    `);
 })();
+
+
+
+
+
+
